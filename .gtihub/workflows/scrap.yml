@@ -19,4 +19,4 @@ jobs:
           python-version: 3.x # Use the version of Python you need
 
       - name: Run Script
-        run: python scrape.py
+        run: python scrap.py
