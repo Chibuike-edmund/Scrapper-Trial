@@ -1,20 +1,24 @@
 import requests
 from bs4 import BeautifulSoup
 
-url = 'https://wallpapercave.com/aggretsuko-wallpapers'
+def scrape_wallpapers(url):
+    response = requests.get(url)
 
-response = requests.get(url)
-soup = BeautifulSoup(response.content, 'html.parser')
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.content, 'html.parser')
+        image_tags = soup.find_all('img', class_='wp-image')
 
-# Extract the image URLs from the HTML
-image_urls = []
-for image in soup.find_all('img', class_='wallpaper-image'):
-    image_urls.append(image['src'])
+        image_urls = [img['src'] for img in image_tags]
+        
+        return image_urls
+    else:
+        print(f'Error: Unable to fetch content. Status code: {response.status_code}')
+        return None
 
-# Save the image URLs to a file
-with open('aggretsuko_wallpapers.txt', 'w') as f:
-    for image_url in image_urls:
-        f.write(image_url + '\n')
+if __name__ == '__main__':
+    url = 'https://wallpapercave.com/aggretsuko-wallpapers'
+    image_urls = scrape_wallpapers(url)
 
-# Print the number of image URLs that were scraped
-print('The number of image URLs that were scraped is:', len(image_urls))
+    if image_urls:
+        for i, url in enumerate(image_urls, 1):
+            print(f"Image {i}: {url}")

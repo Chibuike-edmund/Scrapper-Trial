@@ -1,9 +1,8 @@
-name: Scrape Aggretsuko wallpapers
+name: Wallpaper Scraper
 
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '0 0 * * *' # Set the schedule (in this case, runs once a day at midnight)
 
 jobs:
   build:
@@ -16,7 +15,10 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x # Use the version of Python you need
+          python-version: 3.8
 
-      - name: Run Script
-        run: python scrap.py
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Run Scraper
+        run: python Scrap.py
